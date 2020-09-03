@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="header">
+      <img src="./img/logo1.png" height="300px" alt="">
+    </div>
+    <main>
+      <div class="dropdown" style="margin:10px">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          MENU
+        </a>
+      
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="./">Home</a>
+          <a class="dropdown-item" href="xmlData.html">Xml</a>
+          <a class="dropdown-item" href="excel.html">Excel</a>
+          <a class="dropdown-item" href="showPhoto.html">Photo</a>
+          <a class="dropdown-item" href="showVideo.html">Video</a>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center">
+        <input
+          type="file"
+          id="fileUpload"
+          style="margin-top: 0px; margin-left: 10px"
+        />
+        <input
+          class="btn btn-danger"
+          type="button"
+          id="upload"
+          value="Upload"
+          onclick="Upload()"
+        />
+      </div>
+
+      <hr />
+      <div style="display: flex;justify-content: center;" id="dvExcel"></div>
+    </main>
+    <div class="footer">
+      <div style="text-align: center;">
+        <h3> <i>PLAYERUNKNOWN'S BATTLEGROUNDS THAILAND</i></h3>
+      </div>
+    </div>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"
+    ></script>
+    <script type="text/javascript">
+      function Upload() {
+        //Reference the FileUpload element.
+        var fileUpload = document.getElementById("fileUpload");
+
+        //Validate whether File is valid Excel file.
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+          if (typeof FileReader != "undefined") {
+            var reader = new FileReader();
+
+            //For Browsers other than IE.
+            if (reader.readAsBinaryString) {
+              reader.onload = function (e) {
+                ProcessExcel(e.target.result);
+              };
+              reader.readAsBinaryString(fileUpload.files[0]);
+            } else {
+              //For IE Browser.
+              reader.onload = function (e) {
+                var data = "";
+                var bytes = new Uint8Array(e.target.result);
+                for (var i = 0; i < bytes.byteLength; i++) {
+                  data += String.fromCharCode(bytes[i]);
+                }
+                ProcessExcel(data);
+              };
+              reader.readAsArrayBuffer(fileUpload.files[0]);
+            }
+          } else {
+            alert("This browser does not support HTML5.");
+          }
+        } else {
+          alert("Please upload a valid Excel file.");
+        }
+      }
+      function ProcessExcel(data) {
+        //Read the Excel File data.
+        var workbook = XLSX.read(data, {
+          type: "binary",
+        });
+
+        //Fetch the name of First Sheet.
+        var firstSheet = workbook.SheetNames[0];
+
+        //Read all rows from First Sheet into an JSON array.
+        var excelRows = XLSX.utils.sheet_to_row_object_array(
+          workbook.Sheets[firstSheet]
+        );
+
+        //Create a HTML Table element.
+        var table = document.createElement("table");
+        table.border = "1";
+        table.className = "table";
+        table.style = "width:60%";
+
+        //Add the header row.
+        var thead = document.createElement("thead");
+        thead.className = "thead-light";
+        table.appendChild(thead);
+
+        var row = thead.insertRow(-1);
+
+        //Add the header cells.
+
+        var headerCell = document.createElement("TH");
+        headerCell.innerHTML = "Id";
+        row.appendChild(headerCell);
+
+        headerCell = document.createElement("TH");
+        headerCell.innerHTML = "Name";
+        row.appendChild(headerCell);
+
+        headerCell = document.createElement("TH");
+        headerCell.innerHTML = "Country";
+        row.appendChild(headerCell);
+
+        //Add the data rows from Excel file.
+        for (var i = 0; i < excelRows.length; i++) {
+          //Add the data row.
+          var row = table.insertRow(-1);
+
+          //Add the data cells.
+          var cell = row.insertCell(-1);
+          cell.innerHTML = excelRows[i].Id;
+
+          cell = row.insertCell(-1);
+          cell.innerHTML = excelRows[i].Name;
+
+          cell = row.insertCell(-1);
+          cell.innerHTML = excelRows[i].Country;
+        }
+
+        var dvExcel = document.getElementById("dvExcel");
+        dvExcel.innerHTML = "";
+        dvExcel.appendChild(table);
+      }
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

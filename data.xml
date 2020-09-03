@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CATALOG>
+  <CD>
+    <WEAPON>Mk47 Mutant</WEAPON>
+    <HEAD>115.1</HEAD>
+    <NECK>86.3</NECK>
+  </CD>
+  <CD>
+   <WEAPON>AKM</WEAPON>
+    <HEAD>110.4</HEAD>
+    <NECK>82.8</NECK>
+  </CD>
+  <CD>
+   <WEAPON>Groza</WEAPON>
+    <HEAD>110.4</HEAD>
+    <NECK>82.8</NECK>
+  </CD>
+  <CD>
+   <WEAPON>Beryl M762</WEAPON>
+    <HEAD>108.1</HEAD>
+    <NECK>81</NECK>
+  </CD>
+    <CD>
+   <WEAPON>M16A4</WEAPON>
+    <HEAD>101</HEAD>
+    <NECK>75.7</NECK>
+  </CD>
+    <CD>
+   <WEAPON>AUG</WEAPON>
+    <HEAD>96.3</HEAD>
+    <NECK>72.2</NECK>
+  </CD>
+    <CD>
+   <WEAPON>G36C</WEAPON>
+    <HEAD>96.3</HEAD>
+    <NECK>72.2</NECK>
+  </CD>
+
+</CATALOG>
